@@ -1,0 +1,27 @@
+name: Publish downloadable header export
+
+on:
+  push:
+    tags:
+      - "header-*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Create release with downloadable files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            feutex-globaler-header-entwurf-03.json \
+            design-concept-03/feutex-header-geschlossen.png \
+            design-concept-03/feutex-header-geoeffnet.png \
+            --title "FEUTEX Header 03" \
+            --notes "Divi-5-JSON sowie PNG-Vorschauen des geschlossenen und geöffneten Headers."
